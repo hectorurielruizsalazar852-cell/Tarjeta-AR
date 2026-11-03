@@ -28,7 +28,12 @@
     const tarjeta = document.querySelector("#tarjeta");
     const escena = document.querySelector("a-scene");
     const panel = document.querySelector("#diagnostico");
+ function mostrar(mensaje) {
+        panel.innerHTML += "<br>" + mensaje;
+        console.log(mensaje);
+    }
 
+    mostrar("JavaScript iniciado");
     
     // Detectar errores generales
     window.addEventListener("error", function(event) {
