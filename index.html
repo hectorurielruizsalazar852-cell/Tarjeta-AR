@@ -9,7 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 </head>
 
-<body> <a-scene mindar-image="imageTargetSrc: ./targets.mind" color-space="sRGB" renderer="colorManagement: true"
+<body>
+
+
+     <a-scene mindar-image="imageTargetSrc: ./targets.mind" color-space="sRGB" renderer="colorManagement: true"
         vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"> <!-- VIDEO --> <a-assets> <video
                 id="miVideo"
     src="./video.mp4"
@@ -21,64 +24,71 @@
             <a-video src="#miVideo" position="0 0 0" width="1" height="0.5625"> </a-video> </a-entity> </a-scene>
     <!-- JAVASCRIPT -->
    <script>
-
     const video = document.querySelector("#miVideo");
     const tarjeta = document.querySelector("#tarjeta");
+    const escena = document.querySelector("a-scene");
+    const panel = document.querySelector("#diagnostico");
 
-    tarjeta.addEventListener("targetFound", async function () {
+    function mostrar(mensaje) {
+        panel.innerHTML += "<br>" + mensaje;
+        console.log(mensaje);
+    }
 
-        console.log("TARJETA ENCONTRADA");
+    mostrar("JavaScript iniciado");
+
+    // Detectar errores generales
+    window.addEventListener("error", function(event) {
+        mostrar("ERROR: " + event.message);
+    });
+
+    // Detectar errores de promesas
+    window.addEventListener("unhandledrejection", function(event) {
+        mostrar("ERROR DE PROMESA: " + event.reason);
+    });
+
+    // A-Frame
+    escena.addEventListener("loaded", function() {
+        mostrar("A-FRAME: escena cargada");
+    });
+
+    escena.addEventListener("renderstart", function() {
+        mostrar("A-FRAME: render iniciado");
+    });
+
+    // MindAR
+    escena.addEventListener("arReady", function() {
+        mostrar("MINDAR: cámara y AR iniciados");
+    });
+
+    escena.addEventListener("arError", function(event) {
+        mostrar("MINDAR: error al iniciar");
+        console.error(event);
+    });
+
+    // Video
+    video.addEventListener("canplay", function() {
+        mostrar("VIDEO: listo");
+    });
+
+    video.addEventListener("error", function() {
+        mostrar("VIDEO: error al cargar");
+    });
+
+    // Reconocimiento de tarjeta
+    tarjeta.addEventListener("targetFound", async function() {
+        mostrar("TARJETA ENCONTRADA");
 
         try {
-
             await video.play();
-
-            console.log("VIDEO REPRODUCIENDO");
-
-        } catch (error) {
-
-            console.log("NO SE PUDO REPRODUCIR:");
-            console.log(error);
-
+        } catch(error) {
+            mostrar("ERROR VIDEO: " + error.message);
         }
-
     });
 
-
-    tarjeta.addEventListener("targetLost", function () {
-
-        console.log("TARJETA PERDIDA");
-
+    tarjeta.addEventListener("targetLost", function() {
         video.pause();
-
+        mostrar("TARJETA PERDIDA");
     });
-
-    video.load();
-
-video.addEventListener("canplay", function () {
-    console.log("Video listo para reproducirse");
-
-    let temporizador;
-
-tarjeta.addEventListener("targetFound", function () {
-
-    clearTimeout(temporizador);
-
-    video.play();
-
-});
-
-tarjeta.addEventListener("targetLost", function () {
-
-    temporizador = setTimeout(function () {
-
-        video.pause();
-
-    }, 500);
-
-});
-});
-
 </script>
 </body>
 
