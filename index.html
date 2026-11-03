@@ -10,9 +10,7 @@
 </head>
 
 <body>
-
-
-     <a-scene mindar-image="imageTargetSrc: ./targets.mind" color-space="sRGB" renderer="colorManagement: true"
+  <a-scene mindar-image="imageTargetSrc: ./targets.mind" color-space="sRGB" renderer="colorManagement: true"
         vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"> <!-- VIDEO --> <a-assets> <video
                 id="miVideo"
     src="./video.mp4"
@@ -28,13 +26,14 @@
     const tarjeta = document.querySelector("#tarjeta");
     const escena = document.querySelector("a-scene");
     const panel = document.querySelector("#diagnostico");
- function mostrar(mensaje) {
+
+    function mostrar(mensaje) {
         panel.innerHTML += "<br>" + mensaje;
         console.log(mensaje);
     }
 
     mostrar("JavaScript iniciado");
-    
+
     // Detectar errores generales
     window.addEventListener("error", function(event) {
         mostrar("ERROR: " + event.message);
