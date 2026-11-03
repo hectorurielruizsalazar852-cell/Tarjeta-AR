@@ -10,6 +10,21 @@
 </head>
 
 <body>
+    <div id="diagnostico" style="
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    background: black;
+    color: white;
+    padding: 12px;
+    font-family: Arial;
+    font-size: 14px;
+    border-radius: 8px;
+    max-width: 90%;
+">
+    Iniciando experiencia...
+</div>
   <a-scene mindar-image="imageTargetSrc: ./targets.mind" color-space="sRGB" renderer="colorManagement: true"
         vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"> <!-- VIDEO --> <a-assets> <video
                 id="miVideo"
@@ -25,7 +40,7 @@
     const video = document.querySelector("#miVideo");
     const tarjeta = document.querySelector("#tarjeta");
     const escena = document.querySelector("a-scene");
-    const panel = document.querySelector("#diagnostico");
+   
 
     function mostrar(mensaje) {
         panel.innerHTML += "<br>" + mensaje;
